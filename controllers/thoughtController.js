@@ -84,18 +84,45 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
   // Update a course
-  updateThought(req, res) {
-    Thought.findOneAndUpdate(
-      { _id: req.params.thoughtId },
-      { $set: req.body },
-      { runValidators: true, new: true }
-    )
-      .then((thought) =>
-        !thought
-          ? res.status(404).json({ message: 'No thought with this id!' })
-          : res.json(thought)
-      )
-      .catch((err) => res.status(500).json(err));
+//   updateThought(req, res) {
+//     Thought.findOneAndUpdate(
+//       { _id: req.params.thoughtId },
+//       { $set: req.body },
+//       { runValidators: true, new: true }
+//     )
+//       .then((thought) =>
+//         !thought
+//           ? res.status(404).json({ message: 'No thought with this id!' })
+//           : res.json(thought)
+//       )
+//       .catch((err) => res.status(500).json(err));
+//   },
+
+// async updateThought(req, res) {
+//     const dbThoughtData = await Thought.findOneAndUpdate({ _id: req.params.thoughtId },
+//       { $set: req.body }, { runValidators: true, new: true });
+
+//     if (!dbThoughtData) {
+//       return res.status(404).json({ message: 'No thought with this id!' });
+//     }
+
+//     res.json(dbThoughtData);
+
+//     console.log(err);
+//     res.status(500).json(err);
+//   },
+
+ updateThought: async (req, res) => {
+    try {
+        const dbThoughtData = await Thought.findOneAndUpdate({ _id: req.params.thoughtId },
+            { $set: req.body }, { runValidators: true, new: true });
+        !dbThoughtData  ? res.status(404).json({ message: 'could not update thought' }) : res.json({ message: 'thought updated' })
+        
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err); 
+    }
+
   },
 
   addReaction: async (req, res) => {
