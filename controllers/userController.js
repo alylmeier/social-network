@@ -97,7 +97,7 @@ removeFriend: async (req, res) => {
       
       const updatedUser = await User.findByIdAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friends: { user: req.params.friendId } } },
+        { $pull: { friends: req.params.friendId  } },
         { new: true }
       );
       console.log('updated user:', updatedUser);
