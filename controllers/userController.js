@@ -69,20 +69,44 @@ addFriend: async (req, res) => {
 
   },
 
-  removeFriend: async (req, res) => {
-    try {
-        const friend = await User.findByIdAndUpdate(
-                    { userId: req.params.userId},
-                    { $pull: { friends: params.friendId} },
-                    { new: true}
-            )
-        !friend  ? res.status(404).json({ message: 'no friend with this ID' }) : res.json(friend)
+ 
+//   removeFriend: async (req, res) => {
+//     try {
+//         const friend = await User.findByIdAndUpdate(
+//                     { _id: req.params.userId},
+//                     { $pull: { friends: { userId: req.params.friendId } } },
+//                     { new: true}
+//             )
+//         !friend  ? res.status(404).json({ message: 'no friend with this ID' }) : res.json(friend)
         
-    } catch (err) {
-        console.log(err);
-        return res.status(500).json(err); 
-    }
+//     } catch (err) {
+//         console.log(err);
+//         return res.status(500).json(err); 
+//     }
 
-  },
+//   },
 
+removeFriend: async (req, res) => {
+    
+    const friend = await User.findByIdAndUpdate(
+        { _id: req.params.userId },
+        {},
+        { new: true }
+      );
+      console.log('friend before pull:', friend);
+      
+      const updatedUser = await User.findByIdAndUpdate(
+        { _id: req.params.userId },
+        { $pull: { friends: { user: req.params.friendId } } },
+        { new: true }
+      );
+      console.log('updated user:', updatedUser);
+      
+      !updatedUser
+        ? res.status(404).json({ message: 'no friend with this ID' })
+        : res.json(updatedUser);
+      
+  }
 };
+
+
