@@ -24,7 +24,7 @@ const reactionSchema = new Schema({
   
 
 
-// create the Users model using the Users Schema
-const Reaction = model('Reaction', reactionSchema);
+// // create the Users model using the Users Schema
+// const Reaction = model('Reaction', reactionSchema);
 
 module.exports = reactionSchema;
